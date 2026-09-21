@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "aiops-copilot": {
+      "url": "http://127.0.0.1:8080/mcp",
+      "headers": {
+        "X-API-Key": "dev-key-desktop-1"
+      }
+    }
+  }
+}

@@ -1,0 +1,72 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: aiops_copilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  rca_mock:
+    build: .
+    command: uvicorn mocks.rca_mock:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+
+  commit_risk_mock:
+    build: .
+    command: uvicorn mocks.commit_risk_mock:app --host 0.0.0.0 --port 8002
+    ports:
+      - "8002:8002"
+
+  arbitration_mock:
+    build: .
+    command: uvicorn mocks.arbitration_mock:app --host 0.0.0.0 --port 8003
+    ports:
+      - "8003:8003"
+
+  mcp_server:
+    build: .
+    command: python -m mcp_server.server
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/aiops_copilot
+      RCA_SERVICE_URL: http://rca_mock:8001
+      COMMIT_RISK_SERVICE_URL: http://commit_risk_mock:8002
+      ARBITRATION_SERVICE_URL: http://arbitration_mock:8003
+      MCP_SERVER_HOST: 0.0.0.0
+      MCP_SERVER_PORT: "8080"
+      MITIGATIONS_ENABLED: "false"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rca_mock:
+        condition: service_started
+      commit_risk_mock:
+        condition: service_started
+      arbitration_mock:
+        condition: service_started
+
+  dashboard:
+    build: .
+    command: streamlit run dashboard/streamlit_app.py --server.address=0.0.0.0 --server.port=8501
+    ports:
+      - "8501:8501"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/aiops_copilot
+      DASHBOARD_REFRESH_SECONDS: "10"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:

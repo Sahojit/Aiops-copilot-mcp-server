@@ -1,0 +1,193 @@
+[
+  {
+    "id": "inc-001",
+    "service_name": "checkout",
+    "metrics": {
+      "connection_pool_utilization": 0.97,
+      "queue_depth": 340,
+      "p99_latency_ms": 4200,
+      "error_rate": 0.18
+    },
+    "expected_root_cause": "database_connection_pool_exhaustion"
+  },
+  {
+    "id": "inc-002",
+    "service_name": "payments",
+    "metrics": {
+      "connection_pool_utilization": 0.95,
+      "queue_depth": 512,
+      "db_wait_time_ms": 2100,
+      "error_rate": 0.22
+    },
+    "expected_root_cause": "database_connection_pool_exhaustion"
+  },
+  {
+    "id": "inc-003",
+    "service_name": "search",
+    "metrics": {
+      "upstream_5xx_rate": 0.31,
+      "p99_latency_ms": 8000,
+      "downstream_service": "recommendations-api",
+      "timeout_count": 240
+    },
+    "expected_root_cause": "downstream_service_timeout"
+  },
+  {
+    "id": "inc-004",
+    "service_name": "notifications",
+    "metrics": {
+      "upstream_5xx_rate": 0.27,
+      "downstream_service": "email-provider",
+      "avg_downstream_latency_ms": 6500,
+      "circuit_breaker_open": true
+    },
+    "expected_root_cause": "downstream_service_timeout"
+  },
+  {
+    "id": "inc-005",
+    "service_name": "checkout",
+    "metrics": {
+      "memory_usage_mb": 7200,
+      "memory_growth_rate_mb_per_min": 85,
+      "gc_pause_time_ms": 1400,
+      "uptime_hours": 36
+    },
+    "expected_root_cause": "memory_leak"
+  },
+  {
+    "id": "inc-006",
+    "service_name": "auth",
+    "metrics": {
+      "memory_usage_mb": 5400,
+      "memory_growth_rate_mb_per_min": 60,
+      "gc_pause_time_ms": 980,
+      "uptime_hours": 51
+    },
+    "expected_root_cause": "memory_leak"
+  },
+  {
+    "id": "inc-007",
+    "service_name": "search",
+    "metrics": {
+      "recent_deploy_minutes_ago": 4,
+      "config_diff_detected": true,
+      "error_rate": 0.42,
+      "error_rate_before_deploy": 0.01
+    },
+    "expected_root_cause": "bad_deploy_config_change"
+  },
+  {
+    "id": "inc-008",
+    "service_name": "payments",
+    "metrics": {
+      "recent_deploy_minutes_ago": 9,
+      "config_diff_detected": true,
+      "feature_flag_change": "checkout_v2_rollout=100%",
+      "error_rate": 0.55
+    },
+    "expected_root_cause": "bad_deploy_config_change"
+  },
+  {
+    "id": "inc-009",
+    "service_name": "notifications",
+    "metrics": {
+      "cpu_utilization_pct": 98,
+      "cpu_throttle_events": 145,
+      "p99_latency_ms": 3100
+    },
+    "expected_root_cause": "cpu_throttling"
+  },
+  {
+    "id": "inc-010",
+    "service_name": "checkout",
+    "metrics": {
+      "cpu_utilization_pct": 96,
+      "cpu_throttle_events": 210,
+      "container_cpu_limit_millicores": 500
+    },
+    "expected_root_cause": "cpu_throttling"
+  },
+  {
+    "id": "inc-011",
+    "service_name": "search",
+    "metrics": {
+      "cache_hit_ratio": 0.04,
+      "cache_hit_ratio_baseline": 0.92,
+      "backend_qps": 8400,
+      "backend_qps_baseline": 600
+    },
+    "expected_root_cause": "cache_stampede"
+  },
+  {
+    "id": "inc-012",
+    "service_name": "auth",
+    "metrics": {
+      "cache_hit_ratio": 0.08,
+      "cache_eviction_event": "mass_ttl_expiry",
+      "backend_qps": 5200
+    },
+    "expected_root_cause": "cache_stampede"
+  },
+  {
+    "id": "inc-013",
+    "service_name": "payments",
+    "metrics": {
+      "dns_lookup_failures": 1800,
+      "dns_lookup_latency_ms": 4900,
+      "connection_error_rate": 0.61
+    },
+    "expected_root_cause": "dns_resolution_failure"
+  },
+  {
+    "id": "inc-014",
+    "service_name": "notifications",
+    "metrics": {
+      "dns_lookup_failures": 950,
+      "resolver_timeout_count": 300,
+      "connection_error_rate": 0.44
+    },
+    "expected_root_cause": "dns_resolution_failure"
+  },
+  {
+    "id": "inc-015",
+    "service_name": "checkout",
+    "metrics": {
+      "disk_iops": 42000,
+      "disk_queue_length": 220,
+      "disk_write_latency_ms": 850
+    },
+    "expected_root_cause": "disk_io_saturation"
+  },
+  {
+    "id": "inc-016",
+    "service_name": "search",
+    "metrics": {
+      "disk_iops": 38500,
+      "disk_queue_length": 190,
+      "log_write_backlog_mb": 4200
+    },
+    "expected_root_cause": "disk_io_saturation"
+  },
+  {
+    "id": "inc-017",
+    "service_name": "auth",
+    "metrics": {
+      "connection_pool_utilization": 0.88,
+      "queue_depth": 260,
+      "db_wait_time_ms": 1600,
+      "error_rate": 0.15
+    },
+    "expected_root_cause": "database_connection_pool_exhaustion"
+  },
+  {
+    "id": "inc-018",
+    "service_name": "payments",
+    "metrics": {
+      "upstream_5xx_rate": 0.19,
+      "downstream_service": "fraud-check-api",
+      "avg_downstream_latency_ms": 5200,
+      "timeout_count": 180
+    },
+    "expected_root_cause": "downstream_service_timeout"
+  }
+]
